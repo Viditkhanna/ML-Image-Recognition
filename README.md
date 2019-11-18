@@ -1,4 +1,3 @@
-# rock_paper_scissor
 
 A new Flutter application.
 
