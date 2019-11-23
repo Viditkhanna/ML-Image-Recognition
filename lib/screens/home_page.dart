@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage>
   }
 
   changeColor(Color _color) {
-    print(_color);
     setState(() => googleColor.googleColor = _color);
   }
 
@@ -201,7 +200,11 @@ class _HomePageState extends State<HomePage>
           );
         });
   }
-
+  @override
+  void dispose() {
+      animationController.dispose();
+    super.dispose();
+  }
   final sizedBox = SizedBox(
     width: 20,
   );
@@ -212,12 +215,12 @@ class _HomePageState extends State<HomePage>
     Navigator.pop(context);
     try {
       final _imageFile = await ImagePicker.pickImage(source: source);
-      print(_imageFile);
       if (_imageFile != null) {
+        showDialog(context: context,builder: (_)=>Center(child: CircularProgressIndicator(backgroundColor: googleColor.googleColor,),));
         final FirebaseVisionImage visionImage =
             FirebaseVisionImage.fromFile(_imageFile);
         final List<ImageLabel> labels = await labeler.processImage(visionImage);
-        print(labels);
+        Navigator.pop(context);
         if (labels.length > 0) {
           speakUp(labels[0].text);
           imageLabel = labels[0].text;
